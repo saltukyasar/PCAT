@@ -10,11 +10,15 @@ const pageController = require('./controllers/pageControllers')
 const app = express();
 
 //connect DB
-mongoose.connect('mongodb://localhost/pcat-test-db', {
+mongoose.connect('mongodb+srv://pcat:pcatapp@cluster0.9k0ar.mongodb.net/pcat-db?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   //useFindAndModify: false
-});
+}).then(()=>{
+  console.log('DB connected')
+}).catch((err)=>{
+  console.log(err)
+})
 
 //Template engine
 app.set('view engine', 'ejs');
@@ -42,7 +46,7 @@ app.get('/add', pageController.getAddPage);
 app.get('/photos/edit/:id', pageController.getEditPage);
 
 
-const port = 3000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`sunucu ${port} portunda calisiyor...`);
