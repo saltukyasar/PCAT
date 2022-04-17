@@ -4,9 +4,8 @@ const fileUpload = require('express-fileupload');
 const methodOverride = require('method-override');
 const ejs = require('ejs');
 const path = require('path');
-const fs = require('fs');
-const Photo = require('./models/Photo');
 const photoController = require('./controllers/photoControllers');
+const pageController = require('./controllers/pageControllers')
 
 const app = express();
 
@@ -38,19 +37,9 @@ app.post('/photos', photoController.createPhoto);
 app.put('/photos/:id', photoController.updatePhoto);
 app.delete('/photos/:id', photoController.deletePhoto);
 
-app.get('/about', (req, res) => {
-  res.render('about');
-});
-app.get('/add', (req, res) => {
-  res.render('add');
-});
-
-app.get('/photos/edit/:id', async (req, res) => {
-  const photo = await Photo.findOne({ _id: req.params.id });
-  res.render('edit', {
-    photo,
-  });
-});
+app.get('/about', pageController.getAboutPage);
+app.get('/add', pageController.getAddPage);
+app.get('/photos/edit/:id', pageController.getEditPage);
 
 
 const port = 3000;
